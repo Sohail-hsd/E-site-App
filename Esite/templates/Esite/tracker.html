@@ -1,0 +1,156 @@
+{% extends "Esite/layout.html" %}
+{% block title%} Tracker Your Order {% endblock %}
+
+{% block link %}
+
+{% endblock %}
+
+{% block body %}
+
+
+<h1>{{page}}</h1>
+
+<div class="container">
+    <h2 id="yourCart">Your Shoping Cart!</h2>
+      <div class="black my-3">
+          <ul class="list-group " id="cart_item" style="color: black;">
+              <!--Cart Items Here!-->
+          
+      </div>
+      <h2>Enter your details here!</h2>
+        <div class="my-4">
+
+        <form method="POST" id="trackerForm" onsubmit="return check()" name="trackerForm" >  {% csrf_token %}
+          <input type="hidden" name="item_JSON" id="item_JSON">
+          <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputName">Order ID</label>
+                    <input name="order_id" type="text" class="form-control" id="order_id" placeholder="Order id">
+                </div>
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Email</label>
+                <input name="email" type="email" class="form-control" id="email" placeholder="Email">
+              </div>
+            </div>
+            <h4  style="color: brown; display:none;" class="ver">Please Fill All the Above!</h4>
+            <button type="submit" id="submitt" onclick="" class="btn btn-primary">Track Order</button>
+        </form>
+    </div>
+    <h2>Your Shoping Cart Updates!</h2>
+      <div class="black my-4">
+          <ul class="list-group " id="item" style="color: black;">
+              <!--Cart Items Here!-->
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span id="itemName"> <b> Enter your order id and email to track your order status....! </b></span>"></li>
+            </ul>
+            </ul>
+      </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  cart_item = true;
+document.getElementById('yourCart').innerHTML = "";
+
+function check()
+{
+  let order_id= $('input[name=order_id]').val();
+  let email = $('input[name=email]').val();
+  if(order_id.length == 0)
+  {
+    console.log('Empty')
+    $('#item').empty();
+    myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                      <span id="itemName"style="color:red;" > <b> Please...!, Enter the email and Order id, To track your order. </b></span>
+                    </li>`;
+    $('#item').append(myStr);
+  }
+}
+    $('#trackerForm').submit(function(event){
+      $('#item').empty();
+      var check = false;
+      let order_id= $('input[name=order_id]').val();
+      let email = $('input[name=email]').val();
+      if(order_id.length == 0 & email.length == 0)
+      {
+        console.log('Empty')
+        $('#item').empty();
+        myStr = `<li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:gray;>
+                          <span id="itemName"style="color:red;" > <b> Please...!, Enter the email and Order id, To track your order. </b></span>
+                        </li>`;
+        $('#item').append(myStr);
+        check = true;
+      }
+      
+
+
+      var formData = {
+        'order_id': $('input[name=order_id]').val(),
+        'email':$('input[name=email]').val(),
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+      };
+
+      $.ajax({
+        type:"POST",
+        url: "{% url 'Esite:tracker' %}",
+        data: formData,
+        encode:true        
+      }).done(function(data){
+        console.log(data);
+        data = JSON.parse(data)
+        updates = data[0];
+        console.log(data[0])
+
+        if(updates.length > 0 & updates != {}){
+            for(i=0;i<updates.length;i++)
+            {
+              let text = updates[i]['text'];
+              let time = updates[i]['date'];
+              myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                      <span id="itemName"> <b> ${text} </b></span>
+                      <span id="numItems" class="badge badge-primary badge-pill">${time}</span>
+                    </li>`;
+              $('#item').append(myStr);
+            }
+            cart = JSON.parse(data[1]);
+            
+      }else if(check == false){
+        myStr = `<li class="list-group-item d-flex justify-content-between align-items-center bg-dark">
+                      <span id="itemName" style="color:red;"> <b> Sorry.....!, We are unable to fetch this order id and Email. Make sure that the order id and email is correct </b></span>
+                    </li>`;
+        $('#item').append(myStr);
+      }
+
+      /// Cart Items (Item_JSON)
+
+      var total_bill = 0;
+      if (cart_item == true){
+          for(item in cart)
+                {
+                  let name = cart[item][1];
+                  let qty = cart[item][0];
+                  let itemPrice = cart[item][2];
+                  total_bill = total_bill + itemPrice;
+                  console.log(itemPrice);
+                  myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span id="itemName"> <b> ${name} </b></span>
+                          <span id="numItems" class="badge badge-primary badge-pill">${qty}</span>
+                        </li>`;
+                  $('#cart_item').append(myStr);
+                }
+               price = ` <li class="my-3 list-group-item d-flex justify-content-between align-items-center bg-dark">
+                <span id="itemName"> <b> Total Bill : Rs. <span id="total_bill">${total_bill}</span> $</b>`
+                $('#cart_item').append(price);
+                cart_item = false;
+      }
+      
+
+      });
+      event.preventDefault();
+
+      
+    });
+
+</script>
+{% endblock %}

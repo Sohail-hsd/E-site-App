@@ -1,0 +1,25 @@
+{% extends 'Esite/layout.html' %}
+{% block css %}
+{% endblock %}
+
+
+
+{% block body %}
+<div><button><a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
+</button>
+</div>
+{% endblock %}
+
+{% block js %} 
+<script>
+
+ // Pop Over
+ $('.popover-dismiss').popover({
+  trigger: 'focus'
+});
+
+$(document).ready(function() {
+    $('[data-toggle=popover]').popover();
+}); 
+</script>
+{% endblock %}

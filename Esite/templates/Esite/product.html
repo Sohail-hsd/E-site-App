@@ -1,0 +1,65 @@
+{% extends "Esite/layout.html" %}
+{% block title%} Product {% endblock %}
+{% block body %}
+{% load static %}
+    <h1>{{page}}</h1>
+
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <img src="/media/{{product.image}}" width="331px" >
+                </div>
+            <div class="mx-4 my-4">
+                <button id="{{i.id}}" class="btn btn-primary cart"style="margin-right: 6px;"  >Add To Cart <i class="fas fa-cart-plus"></i></a></button>
+                <a href=""><button id="qv{{product.id}}" class="btn btn-primary cart">Buy Now</button></a>
+            </div>
+            </div>
+            <div class="col-md-8">
+                <h5 style="color: white;">{{product.product_name}}</h5>
+                <h5>Rs. {{product.price}} $</h5>
+                <p style="color: white;">{{product.description}}</p>
+            </div>
+        </div>
+    </div>
+        
+{% endblock %}
+
+{% block js %} 
+ 
+<script>
+  console.log('working');
+  if(localStorage.getItem('cart') == null){
+   var cart = {};
+   document.getElementById('cart').style.display('none');
+ }
+ else
+ {
+   cart = JSON.parse(localStorage.getItem('cart'));
+   document.getElementById('cart').innerHTML = Object.keys(cart).length;
+
+ }
+ $('.cart').click(function(){
+   console.log('clicked');
+   var cart_id = this.id.toString();
+   console.log(cart_id);
+   if (cart[cart_id] != undefined){
+     cart[cart_id] = cart[cart_id] + 1;
+   }
+   else{
+     cart[cart_id] = 1;
+   }
+   console.log(cart);
+   localStorage.setItem('cart',JSON.stringify(cart));
+   document.getElementById('cart').innerHTML = Object.keys(cart).length;
+ });
+
+ $('#popcart').popover();
+ document.getElementById("popcart").setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>');
+ document.getElementById('cart').setAttribute('display', 'none')
+$(document).ready(function(){
+ $('[data-toggle="popover"]').popover();   
+});
+</script>
+
+{% endblock %}

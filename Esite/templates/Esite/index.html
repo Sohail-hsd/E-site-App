@@ -1,0 +1,462 @@
+{% extends 'Esite/layout.html' %}
+{% block title%} Home {% endblock %}
+{% block css %}
+          .col-md-3
+          {
+          display: inline-block;
+          margin-left:-4px;
+          }
+
+          .carousel-indicators .active {
+          background-color: blue;
+            }
+
+          .col-md-3 img{
+
+            max-width: 178px;
+            height: 200px;
+            width: initial;
+          }
+
+          body .carousel-indicator li{
+          background-color: blue;
+          }
+
+          body .carousel-indicators{
+          bottom: 0;
+          }
+
+          body .carousel-control-prev-icon,
+          body .carousel-control-next-icon{
+          background-color: blue;
+          }
+
+          .carousel-control-prev,
+          .carousel-control-next{
+          top: auto;
+          bottom: auto;
+          
+          }
+           body .no-padding{
+           padding-left: 0,
+           padding-right: 0;
+           }
+
+           body .carousel-indicators {
+            bottom: -55px;
+            background-color: currentColor;
+            border-radius: 30px;
+           }
+           .flex{
+             display:flex;
+           }
+           .navbar
+           {
+            margin-bottom: 0px;
+           }
+
+        .form-inline .form-control {
+            display: flex;
+            width: 430px;
+            vertical-align: middle;
+            border-radius: 30px;
+            margin-top: 7px;
+            padding-top: 6px;
+        }
+        .desc{
+          white-space = nowrap;
+          width: 225px; 
+          verflow: hidden;
+          text-overflow: clip; 
+          border: 0px solid #000000;
+        }
+        .desc:hover{
+          overflow:visible;
+          color:red;
+        }
+        .cart{
+          border-radius:20px;
+        }
+        .black{
+          color:black;
+        }
+
+        .b {
+          white-space: nowrap; 
+          width: 200px; 
+          overflow: hidden;
+          text-overflow: ellipsis; 
+        }
+
+
+
+      
+       
+        body {
+          
+          font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          color: #000;
+          margin: 0;
+          padding: 0;
+        }
+        .sec{
+          
+          width: 354px;
+          padding-left: 0px;
+          margin-right: 30px;
+          height: 476px;
+          
+
+}
+
+        }
+        .swiper-container {
+          width: 100%;
+          height: 85%;
+        }
+    
+        .swiper-slide {
+          text-align: center;
+          font-size: 18px;
+          background: #fff;
+         
+          
+    
+          /* Center slide text vertically 
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          -webkit-justify-content: center;
+          justify-content: center;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          -webkit-align-items: center;
+          */
+        }
+        
+        .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{
+            bottom: 0px;
+        }
+        
+      
+ {% endblock %}
+
+{% block body %}
+{% load static %}
+
+
+
+<div class="content" >
+ <div id="myCarousel" class="carousel slide" data-ride="carousel">
+   
+  <ul class="carousel-indicators " style="bottom: 11px;
+  left: 672px;">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    
+    {% for i in image %}
+      <li data-target="#myCarousel{{forloop.counter}}" data-slide-to="{{forloop.counte}}" class="" ></li>
+    {% endfor %}
+  </ul>
+  
+  <div class="carousel-inner">
+
+    <div class="item active">
+      <img src="{% static 'Esite/img/g.jpg' %}" style="width:100%;height: 650px;" alt="Chicago">
+       <div class="carousel-caption">
+         <h3>Los Angeles</h3>
+         <p>LA is always so much fun!</p>
+       </div>
+     </div>
+
+    {% for i in image %} 
+ 
+
+   <div class="item">
+    <img src='/media/{{i.image}}' style="width:100%;height: 650px;" alt="Chania">
+      <div class="carousel-caption">
+        <h3>{{i.headding}}</h3>
+        <p>{{i.subheadding}}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!--<div class="item">
+      <img src="{% static 'Esite/img/g.jpg' %}" style="width:100%;height: 650px;" alt="New York">
+      <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div>
+    </div>
+    --->
+ 
+  </div>
+
+
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+</div>  
+
+
+
+
+<div class="container my-4">
+
+    <!--Slideshow starts here -->
+    {% for product, range, slides in allProds %}
+    <h1 class="my-4" style="padding-top:50px;">{{product.0.category}}</h1>
+    <!-- <div class="row"> -->
+<div id="demo{{forloop.counter}}" class="carousel slide " style="padding-top:39px;" data-ride="carousel">
+    <ul class="carousel-indicators">
+      <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+
+       {% for i in range %}
+      <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}" ></li>
+      {% endfor %}
+    </ul>
+
+
+    <div class="col container carousel-inner no-padding">
+
+      <div class="carousel-item active">
+
+        {% for i in product %}
+        <div class="col-xs-3 col-sm-3 col-md-3">
+          <div class="card" style="height: 37rem; width: 25rem;align-items: center;">
+            <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+            <div class="card-body">
+              <h4 class="card-title black" id="name{{i.id}}">{{i.product_name}}</h4>
+              <h5 class="card-title black">Rs.<span id="price">{{i.price}}</span>$</h5>
+              <p class="card-text desc black b">{{i.description}}</p>
+              
+              <span id="update{{i.id}}" class="update">
+              <button id="{{i.id}}" class="btn btn-primary cart"  >Add To Cart <i class="fas fa-cart-plus"></i></a>
+              </button>
+            </span>
+              <a href="{% url 'Esite:product' i.id %}"><button id="qv{{i.id}}" class="btn btn-primary cart">Quick View</button></a>
+
+            </div>
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+      </div><div class="carousel-item">
+        {% endif %}
+        <!-- </div> -->
+        {% endfor %}
+    </div>
+
+</div>
+</div>
+    <!-- left and right controls for the slide -->
+    <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev" >
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next" >
+        <span class="carousel-control-next-icon"></span>
+    </a>
+    
+    <br>
+    {% endfor %}
+
+ <!--The Second Slider-->
+ {% load static %}
+          <!-- Swiper -->
+            <div style="padding-top:50px;" >
+              <hr>
+            {% for product, range, slides in allProds %}
+            <h1 class="my-4">{{product.0.category}}</h1>
+            <div class="swiper-container" style="
+            margin-bottom: 81px;
+            left: -13px; padding-top: 13px;
+            height: 570px;
+            ">
+             
+              <div class="swiper-wrapper">
+                  {% for i in product %}
+                <div class="swiper-slide sec">
+                  <img src='/media/{{i.image}}' alt="Phone Pic" style="width:fit-content;height: 300px;">
+                  <div class="card-body">
+                    <h4 class="card-title black" id = "name{{i.id}}" style="margin-right: 0px;">{{i.product_name}}</h4>
+                    <h5 class="card-title black">Rs.<span id="price">{{i.price}}</span>$</h5>
+                    <p class="card-text desc black b" style="margin:15px 71px; ">{{i.description}}</p>
+
+                    <span id="2update{{i.id}}" class="update">
+                      <button id="{{i.id}}" class="btn btn-primary cart"  >Add To Cart <i class="fas fa-cart-plus"></i></a>
+                      </button>
+                    </span>
+
+                    <a href="{% url 'Esite:product' i.id %}"><button id="qv{{i.id}}" class="btn btn-primary cart">Quick View</button></a>
+                  </div>
+              </div>
+              {% endfor %}
+              </div>
+              
+              <!-- Add Pagination -->
+              <div class="swiper-pagination"></div>
+          
+            </div>
+            {% endfor %}
+        </div>
+     
+</div>
+ {% endblock %}
+
+ {% block js %} 
+ 
+ 
+ 
+
+ <script>
+// Load the Cart form localStorage.
+if (localStorage.getItem('cart') == null){
+  var cart = {};
+}
+else{
+  cart = JSON.parse(localStorage.getItem('cart'));
+  document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  updateCart(cart);
+}
+
+function updateCart(cart){
+  
+  for (var item in cart){
+
+    if(cart[item][0] != 0){
+      document.getElementById('update' + item).innerHTML = "<button id='minus"+ item +"' class='btn btn-primary rad minus'>-</button> <span id='val"+ item +"'>"+cart[item][0] +"</span> <button id='plus"+ item +"' class='btn btn-primary rad plus'>+</button>";
+      document.getElementById('2update' + item).innerHTML = "<button id='minus"+ item +"' class='btn btn-primary rad minus'>-</button> <span id='val"+ item +"'>"+cart[item][0] +"</span> <button id='plus"+ item +"' class='btn btn-primary rad plus'>+</button>";
+
+    }
+    else
+    {
+      document.getElementById('update'+ item).innerHTML = '<button id=" '+item+' " class="btn btn-primary cart"  >Add To Cart <i class="fas fa-cart-plus"></i></a></button>';
+      document.getElementById('2update'+ item).innerHTML = '<button id=" '+item+' " class="btn btn-primary cart"  >Add To Cart <i class="fas fa-cart-plus"></i></a></button>';
+      delete cart[item];
+      
+    }
+  }
+  localStorage.setItem('cart',JSON.stringify(cart));
+  document.getElementById('cart').innerHTML = Object.keys(cart).length;
+  updatePopOver(cart);
+
+}
+
+
+//If cart is clicked increment the popover <spane>
+$('.update').on('click','button.cart',function(){
+  console.log('cart clicked');
+  var id = this.id.toString();
+  console.log(id);
+  if(cart[id] != undefined){
+    qut = cart[id][0]++;
+  }
+  else{
+    qut = 1;
+    name =  document.getElementById('name' + id).innerHTML;
+    price =  document.getElementById('price').innerHTML;
+    cart[id] = [qut,name,parseInt(price)];
+  }
+  console.log(cart);
+  updateCart(cart);
+  
+});
+
+
+
+
+$('#popcart').popover();
+updatePopOver(cart);
+// Updateing the popOver showing the cart Items
+function updatePopOver(cart){
+  console.log('Inside Pop Over');
+  var  pop = "";
+  pop = pop + "<div class='mx-2 my-2' style='display:list-item;padding: 5px 5px;'>";
+  item_No = 1;
+  for(var item in cart){
+    pop = pop + "<b>" + item_No + ": </b>";
+    pop = pop + document.getElementById('name' + item).innerHTML.slice(0,19) + " Qut : " + cart[item][0] + "<br>";
+    item_No++;
+  }
+  pop = pop + "</div> <hr> <a href='{% url 'Esite:checkout' %}' class='btn btn-primary rad'>Check Out</a>  <a id='clear' onclick='clearCart()' class='btn btn-danger'>Clear Cart</a>";
+
+  console.log(pop);
+  document.getElementById('popcart').setAttribute('data-content',pop);
+  $('#popcart').popover('show');
+
+}
+
+function clearCart(){
+  //cart = JSON.parse(localStorage.getItem('cart'));
+  // for (var item in cart) {
+  //       document.getElementById('update' + item).innerHTML = '<button id="' + item + '" class="btn btn-primary cart">Add To Cart</button>'
+  //   }
+  localStorage.clear();
+  cart = {};
+  console.log('Cart Cleard');
+  updatePopOver(cart);
+  updateCart(cart);
+}
+
+$('.update').on('click','button.minus',function(){
+  console.log('minus Clicked');
+  var a = this.id.slice(5,);
+  console.log(a);
+  cart[a][0] = cart[a][0] - 1;
+  cart[a][0] = Math.max(0,cart[a][0]);
+  console.log(cart[a]);
+  document.getElementById('val' + a ).innerHTML = cart[a][0];
+  
+  
+  // if(cart[a][0] == 0){
+  //   document.getElementById('update' + a).innerHTML = '<button id=" '+a+' " class="btn btn-primary cart">Add To Cart <i class="fas fa-cart-plus"></i></a></button>';
+  //   delete cart[a];
+  // }
+  // else
+  // {
+  //   document.getElementById(a).innerHTML = cart[a][0];
+  // }
+  updateCart(cart);
+  
+})
+
+$('.update').on('click','button.plus',function(){
+  console.log('Plus Clicked');
+  var a = this.id.slice(4,);
+  cart[a][0] = cart[a][0] + 1;
+  console.log(cart[a][0]);
+  
+  document.getElementById('val' + a ).innerHTML = cart[a][0];
+  updateCart(cart);
+})
+
+
+
+/// The Second Slider.
+const swiper = new Swiper('.swiper-container', {
+              slidesPerView: 3,
+              spaceBetween: 30,
+              autoplay: {
+              delay: 3000,
+              disableOnInteraction: false,
+              },
+              pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+              
+              },
+              
+
+            });
+ </script>
+ 
+ {% endblock %}
